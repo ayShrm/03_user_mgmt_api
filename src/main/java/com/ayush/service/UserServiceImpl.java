@@ -41,6 +41,8 @@ public class UserServiceImpl implements UserService {
 		usrDtls.setSsn(userDto.getSsn());
 		usrDtls.setPassword(generatePassword.generateSecurePwd());
 		UserDetails save = userDtlsRepo.save(usrDtls);
+		Token token = new Token(usrDtls);
+		tokenRepo.save(token);
 		return save.getUserId() != null;
 	}
 

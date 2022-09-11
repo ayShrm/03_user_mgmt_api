@@ -51,20 +51,16 @@ public class UserRestController {
 		UserDetails userDetails = userService.getUserbyEmail(userDto.getUserEmail());
 		if (userDetails == null) {
 			boolean register = userService.register(userDto);
-			UserDetails user = userService.getUserbyEmail(userDto.getUserEmail());
-			Token token = new Token(user);
-			if (user != null) {
-				tokenRepo.save(token);
-			}
 			String appUrl = request.getScheme() + "://" + request.getServerName();
 			if (register) {
+				UserDetails user = userService.getUserbyEmail(userDto.getUserEmail());
 				String mailTo = userService.getUserbyEmail(userDto.getUserEmail()).getEmailId();
 				String password = userService.getUserbyEmail(mailTo).getPassword();
 				String mailSub = messages.get(Constants.account_Act);
 				String mailBody = "Below given is the temporary password\n\nPassword: " + password
 						+ "  set for your registered Id " + mailTo
 						+ ".\n\nTo change the password Activate your account.\n\nClick the link below to activate.\n "
-						+ appUrl + "/activate?token=" + token.getToken();
+						+ appUrl + "/activate?token=" + tokenRepo.findToken(user).getToken();
 
 				emailService.sendMail(mailTo, mailSub, mailBody);
 				return new ResponseEntity<>(messages.get(Constants.acct_Reg), HttpStatus.OK);
@@ -73,7 +69,7 @@ public class UserRestController {
 		return new ResponseEntity<>(messages.get(Constants.user_Exists), HttpStatus.OK);
 	}
 
-	@PostMapping("/activate/")
+	@PostMapping("/activate")
 	public ResponseEntity<String> activate(@RequestParam("token") String cnfmToken, @RequestBody UserDto userDto) {
 		Optional<Token> tkn = tokenRepo.findUserByToken(cnfmToken);
 		if (tkn.isPresent()) {
