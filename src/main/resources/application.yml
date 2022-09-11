@@ -1,0 +1,63 @@
+spring:
+  boot:
+    admin:
+      mail:
+        from: ${spring.mail.username}
+        to: ${spring.mail.username}, test@gmail.com
+  datasource:
+    password: root
+    url: jdbc:mysql://localhost:3306/userDb
+    username: root
+  driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+  mail:
+    host: smtp.gmail.com
+    password: "The app password of your mail id not the actual mail id password"
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        transport:
+          protocol: smtp
+    protocol: smtp
+    username: "Your email id that will be used to send mail"
+  main:
+    banner-mode: 'off'
+    
+useSSL: false
+
+user-api:
+  messages:
+    welcome: "Welcome! " 
+    accAct: Account Activated!
+    accNotAct: Account is not Activate!
+    accNotFind: Didn't find an account for that Mail Id!!
+    pwdMismatch: New Password and Confirm Password does not match!
+    incTempPwd: Temporary Password is incorrect!
+    userExists: User already Exists!
+    userNotExists: User does not Exists!
+    incPwd: Incorrect Password!
+    accountAct: Account Activation
+    pwdRecReq: Password Recovery Request
+    plsFind: "Please find the below Password for your registered Account!\n\nPassword: "
+    pwdSent: Password has been sent successfully to register email Id.!
+    acctReg: Thanks for Registering. Activation link has been sent to your registered email.
+    tknExp: Token Expired!
+    userUpdateSucc: User Details Updated!
+    userUpdateFail: Details Updation Failed!
+    userDeleteSucc: User Deleted Successfully!
+    userDeleteFail: User Deletion Failed!
+    accStatusSucc: Account Status Updated!
+    accStatusFail: Account Status Update Failed!!
+    
+    
+ 
