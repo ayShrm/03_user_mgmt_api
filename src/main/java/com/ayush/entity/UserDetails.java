@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -19,7 +20,7 @@ import lombok.Data;
 public class UserDetails {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "S.NO.")
 	private Integer userId;
 
@@ -30,7 +31,7 @@ public class UserDetails {
 	private String emailId;
 
 	@Column(name = "PHONE_NO.", unique = true)
-	private String mobile;
+	private Long mobile;
 
 	@Column(name = "GENDER")
 	private String gender;

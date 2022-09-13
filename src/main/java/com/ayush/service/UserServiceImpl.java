@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.ayush.constants.Constants;
+import com.ayush.dto.AccountActDto;
+import com.ayush.dto.LoginDto;
 import com.ayush.dto.UserDto;
 import com.ayush.entity.Token;
 import com.ayush.entity.UserDetails;
@@ -47,11 +49,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String activate(UserDto userDto) {
-		String emailId = userDto.getUserEmail();
-		String tempPwd = userDto.getTempPwd();
-		String newPwd = userDto.getNewPwd();
-		String cnfmPwd = userDto.getCnfmPwd();
+	public String activate(AccountActDto actDto) {
+		String emailId = actDto.getActivateEmail();
+		String tempPwd = actDto.getTempPwd();
+		String newPwd = actDto.getNewPwd();
+		String cnfmPwd = actDto.getCnfmPwd();
 
 		UserDetails repoEmail = userDtlsRepo.findByEmail(emailId);
 		if (repoEmail != null) {
@@ -120,12 +122,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String logIn(String userEmail, String pwd) {
-		UserDetails user = userDtlsRepo.findByEmail(userEmail);
+	public String logIn(LoginDto loginDto) {
+		UserDetails user = userDtlsRepo.findByEmail(loginDto.getLoginEmail());
 		if (user == null) {
 			return messages.get(Constants.user_Not_Exists);
 		}
-		if (!user.getPassword().equals(pwd)) {
+		if (!user.getPassword().equals(loginDto.getPassword())) {
 			return messages.get(Constants.inc_Pwd);
 		}
 		if (!user.isActive()) {

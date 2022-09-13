@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ayush.constants.Constants;
+import com.ayush.dto.AccountActDto;
+import com.ayush.dto.LoginDto;
 import com.ayush.dto.UserDto;
 import com.ayush.entity.Token;
 import com.ayush.entity.UserDetails;
@@ -60,7 +62,7 @@ public class UserRestController {
 				String mailBody = "Below given is the temporary password\n\nPassword: " + password
 						+ "  set for your registered Id " + mailTo
 						+ ".\n\nTo change the password Activate your account.\n\nClick the link below to activate.\n "
-						+ appUrl + "/activate?token=" + tokenRepo.findToken(user).getToken();
+						+ appUrl + ":8080/activate?token=" + tokenRepo.findToken(user).getToken();
 
 				emailService.sendMail(mailTo, mailSub, mailBody);
 				return new ResponseEntity<>(messages.get(Constants.acct_Reg), HttpStatus.OK);
@@ -70,18 +72,18 @@ public class UserRestController {
 	}
 
 	@PostMapping("/activate")
-	public ResponseEntity<String> activate(@RequestParam("token") String cnfmToken, @RequestBody UserDto userDto) {
+	public ResponseEntity<String> activate(@RequestParam("token") String cnfmToken, @RequestBody AccountActDto actDto) {
 		Optional<Token> tkn = tokenRepo.findUserByToken(cnfmToken);
 		if (tkn.isPresent()) {
-			String activate = userService.activate(userDto);
+			String activate = userService.activate(actDto);
 			return new ResponseEntity<>(activate, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(messages.get(Constants.tkn_Exp), HttpStatus.OK);
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@Valid @RequestBody UserDto userDto) {
-		return new ResponseEntity<>(userService.logIn(userDto.getUserEmail(), userDto.getPassword()), HttpStatus.OK);
+	public ResponseEntity<String> login(@Valid @RequestBody LoginDto loginDto) {
+		return new ResponseEntity<>(userService.logIn(loginDto), HttpStatus.OK);
 	}
 
 	@GetMapping("/users")
