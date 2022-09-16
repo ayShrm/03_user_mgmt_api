@@ -1,0 +1,11 @@
+Hi {FULLNAME},<br/>
+<br/>
+Your registration is almost complete. Please find below given is the generated password,<br/>
+<br/>
+Password: {TEMPPWD} set for your registered Mail Id.<br/>
+<br/>
+To change the password, activate your account.<br/>
+<a href="{URL}">Click Here</a> to activate your account.<br/>
+<br/>
+Thanks,<br/>
+Admin Team.<br/>

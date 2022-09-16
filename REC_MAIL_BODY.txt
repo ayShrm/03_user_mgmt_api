@@ -1,0 +1,8 @@
+Hi {FULLNAME},<br/>
+<br/>
+Please find the below Password for your registered Account!<br/>
+<br/>
+Password: {PWD}<br/>
+<br/>
+Thanks,<br/>
+Admin Team<br/>

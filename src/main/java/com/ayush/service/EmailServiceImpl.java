@@ -1,8 +1,10 @@
 package com.ayush.service;
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,17 +13,24 @@ public class EmailServiceImpl implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 
-	public void sendMail(String toEmail, String subject, String message) {
+	public boolean sendMail(String toEmail, String subject, String body) {
+		boolean isMailSent = false;
+		try {
+			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+			MimeMessageHelper mailMessage = new MimeMessageHelper(mimeMessage);
 
-		var mailMessage = new SimpleMailMessage();
+			mailMessage.setTo(toEmail);
+			mailMessage.setSubject(subject);
+			mailMessage.setText(body, true);
 
-		mailMessage.setTo(toEmail);
-		mailMessage.setSubject(subject);
-		mailMessage.setText(message);
-
-		mailMessage.setFrom("support@demo.com");
-
-		javaMailSender.send(mailMessage);
+			mailMessage.setFrom("support@demo.com");
+			javaMailSender.send(mimeMessage);
+			
+			isMailSent = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return isMailSent;
 	}
 
 }

@@ -28,6 +28,7 @@ import com.ayush.props.AppProperties;
 import com.ayush.repository.TokenRepo;
 import com.ayush.service.EmailService;
 import com.ayush.service.UserService;
+import com.ayush.utility.ReadFile;
 
 @RestController
 public class UserRestController {
@@ -56,19 +57,17 @@ public class UserRestController {
 			String appUrl = request.getScheme() + "://" + request.getServerName();
 			if (register) {
 				UserDetails user = userService.getUserbyEmail(userDto.getUserEmail());
+				String fullName = userService.getUserbyEmail(userDto.getUserEmail()).getFullName();
 				String mailTo = userService.getUserbyEmail(userDto.getUserEmail()).getEmailId();
 				String password = userService.getUserbyEmail(mailTo).getPassword();
 				String mailSub = messages.get(Constants.account_Act);
-				String mailBody = "Below given is the temporary password\n\nPassword: " + password
-						+ "  set for your registered Id " + mailTo
-						+ ".\n\nTo change the password Activate your account.\n\nClick the link below to activate.\n "
-						+ appUrl + ":8080/activate?token=" + tokenRepo.findToken(user).getToken();
-
+				String mailBody = ReadFile.readMailBody(fullName, password, "ACT_MAIL_BODY.txt",
+						appUrl + ":8080/activate?token=" + tokenRepo.findToken(user).getToken());
 				emailService.sendMail(mailTo, mailSub, mailBody);
-				return new ResponseEntity<>(messages.get(Constants.acct_Reg), HttpStatus.OK);
+				return new ResponseEntity<>(messages.get(Constants.acct_Reg), HttpStatus.CREATED);
 			}
 		}
-		return new ResponseEntity<>(messages.get(Constants.user_Exists), HttpStatus.OK);
+		return new ResponseEntity<>(messages.get(Constants.user_Exists), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@PostMapping("/activate")
@@ -101,28 +100,24 @@ public class UserRestController {
 	@PutMapping("/user")
 	public ResponseEntity<String> updatePlan(@RequestBody UserDetails user) {
 		boolean isUpdated = userService.update(user);
-		String msg = messages.get(Constants.EMPTY_STR);
 		if (isUpdated) {
-			msg = messages.get(Constants.user_Update_Succ);
+			return new ResponseEntity<>(messages.get(Constants.user_Update_Succ), HttpStatus.OK);
 		} else {
-			msg = messages.get(Constants.user_Update_Fail);
+			return new ResponseEntity<>(messages.get(Constants.user_Update_Fail), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(msg, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/user/{userId}")
 	public ResponseEntity<String> deleteUser(@PathVariable Integer userId) {
 		boolean isDeleted = userService.deleteUserById(userId);
-		String msg = "";
 		if (isDeleted) {
-			msg = messages.get(Constants.user_Del_Succ);
+			return new ResponseEntity<>(messages.get(Constants.user_Del_Succ), HttpStatus.OK);
 		} else {
-			msg = messages.get(Constants.user_Del_Fail);
+			return new ResponseEntity<>(messages.get(Constants.user_Del_Fail), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(msg, HttpStatus.OK);
 	}
 
-	@PutMapping("/status-change/{userId}/{status}")
+	@PutMapping("/status/{userId}/{status}")
 	public ResponseEntity<String> statusChange(@PathVariable Integer userId, @PathVariable Boolean status) {
 		String msg = "";
 		boolean isStatusChanged = userService.activeSw(userId, status);
@@ -136,13 +131,14 @@ public class UserRestController {
 
 	@PostMapping("/recoverPwd")
 	public ResponseEntity<String> recoverPwd(@RequestParam("email") String userEmail, HttpServletRequest request) {
+		String url = "";
 		UserDetails user = userService.getUserbyEmail(userEmail);
 		if (user == null) {
-			return new ResponseEntity<>(messages.get(Constants.acc_Not_Find), HttpStatus.OK);
+			return new ResponseEntity<>(messages.get(Constants.acc_Not_Find), HttpStatus.BAD_REQUEST);
 		}
 		String mailTo = user.getEmailId();
 		String mailSub = messages.get(Constants.pwd_Rec_Req);
-		String mailBody = messages.get(Constants.pls_Find) + user.getPassword();
+		String mailBody = ReadFile.readMailBody(user.getFullName(), user.getPassword(), "REC_MAIL_BODY.txt", url);
 		emailService.sendMail(mailTo, mailSub, mailBody);
 		return new ResponseEntity<>(messages.get(Constants.pwd_Sent), HttpStatus.OK);
 	}

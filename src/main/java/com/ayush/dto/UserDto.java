@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-
+	
 	@NotNull(message = "Email should not be null")
 	@NotEmpty(message = "Email should not be empty")
 	@Pattern(message = "Invalid email", regexp = "(^[A-Za-z0-9+_.-]+@(.+)$)")

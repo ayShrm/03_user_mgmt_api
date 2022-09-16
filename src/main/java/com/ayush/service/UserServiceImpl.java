@@ -15,7 +15,7 @@ import com.ayush.entity.UserDetails;
 import com.ayush.props.AppProperties;
 import com.ayush.repository.TokenRepo;
 import com.ayush.repository.UserDetailsRepo;
-import com.ayush.utility.generatePassword;
+import com.ayush.utility.GeneratePassword;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 		usrDtls.setEmailId(userDto.getUserEmail());
 		usrDtls.setGender(userDto.getGender());
 		usrDtls.setSsn(userDto.getSsn());
-		usrDtls.setPassword(generatePassword.generateSecurePwd());
+		usrDtls.setPassword(GeneratePassword.generateSecurePwd());
 		UserDetails save = userDtlsRepo.save(usrDtls);
 		Token token = new Token(usrDtls);
 		tokenRepo.save(token);

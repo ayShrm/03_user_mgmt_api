@@ -4,7 +4,7 @@ import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 
-public class generatePassword {
+public class GeneratePassword {
 
 	public static String generateSecurePwd() {
 		CharacterRule LCR = new CharacterRule(EnglishCharacterData.LowerCase);

@@ -18,7 +18,7 @@ spring:
     show-sql: true
   mail:
     host: smtp.gmail.com
-    password: "The app password of your mail id not the actual mail id password"
+    password: azcznajbsdaxdkxl
     port: 587
     properties:
       mail:
@@ -29,7 +29,7 @@ spring:
         transport:
           protocol: smtp
     protocol: smtp
-    username: "Your email id that will be used to send mail"
+    username: aysh3256@gmail.com
   main:
     banner-mode: 'off'
     
