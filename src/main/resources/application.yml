@@ -58,6 +58,8 @@ user-api:
     userDeleteFail: User Deletion Failed!
     accStatusSucc: Account Status Updated!
     accStatusFail: Account Status Update Failed!!
+    activateFileName : "ACT_MAIL_BODY.txt"
+    recoverFileName : "REC_MAIL_BODY.txt"
     
     
  

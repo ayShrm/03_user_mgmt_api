@@ -45,4 +45,8 @@ public class Constants {
 	public static final String acct_status_Succ = "accStatusSucc";
 
 	public static final String acct_status_Fail = "accStatusFail";
+	
+	public static final String act_File_Name = "activateFileName";
+	
+	public static final String rec_File_Name = "recoverFileName";
 }

@@ -61,7 +61,7 @@ public class UserRestController {
 				String mailTo = userService.getUserbyEmail(userDto.getUserEmail()).getEmailId();
 				String password = userService.getUserbyEmail(mailTo).getPassword();
 				String mailSub = messages.get(Constants.account_Act);
-				String mailBody = ReadFile.readMailBody(fullName, password, "ACT_MAIL_BODY.txt",
+				String mailBody = ReadFile.readMailBody(fullName, password, messages.get(Constants.act_File_Name),
 						appUrl + ":8080/activate?token=" + tokenRepo.findToken(user).getToken());
 				emailService.sendMail(mailTo, mailSub, mailBody);
 				return new ResponseEntity<>(messages.get(Constants.acct_Reg), HttpStatus.CREATED);
@@ -119,14 +119,12 @@ public class UserRestController {
 
 	@PutMapping("/status/{userId}/{status}")
 	public ResponseEntity<String> statusChange(@PathVariable Integer userId, @PathVariable Boolean status) {
-		String msg = "";
 		boolean isStatusChanged = userService.activeSw(userId, status);
 		if (isStatusChanged) {
-			msg = messages.get(Constants.acct_status_Succ);
+			return new ResponseEntity<>(messages.get(Constants.acct_status_Succ), HttpStatus.OK);
 		} else {
-			msg = messages.get(Constants.acct_status_Fail);
+			return new ResponseEntity<>(messages.get(Constants.acct_status_Fail), HttpStatus.OK);
 		}
-		return new ResponseEntity<>(msg, HttpStatus.OK);
 	}
 
 	@PostMapping("/recoverPwd")
@@ -138,7 +136,7 @@ public class UserRestController {
 		}
 		String mailTo = user.getEmailId();
 		String mailSub = messages.get(Constants.pwd_Rec_Req);
-		String mailBody = ReadFile.readMailBody(user.getFullName(), user.getPassword(), "REC_MAIL_BODY.txt", url);
+		String mailBody = ReadFile.readMailBody(user.getFullName(), user.getPassword(), messages.get(Constants.rec_File_Name), url);
 		emailService.sendMail(mailTo, mailSub, mailBody);
 		return new ResponseEntity<>(messages.get(Constants.pwd_Sent), HttpStatus.OK);
 	}
