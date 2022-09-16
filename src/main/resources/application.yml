@@ -18,7 +18,7 @@ spring:
     show-sql: true
   mail:
     host: smtp.gmail.com
-    password: azcznajbsdaxdkxl
+    password: "password"
     port: 587
     properties:
       mail:
@@ -29,7 +29,7 @@ spring:
         transport:
           protocol: smtp
     protocol: smtp
-    username: aysh3256@gmail.com
+    username: "emailID"
   main:
     banner-mode: 'off'
     
