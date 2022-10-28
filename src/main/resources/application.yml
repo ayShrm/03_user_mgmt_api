@@ -6,7 +6,7 @@ spring:
         to: ${spring.mail.username}, test@gmail.com
   datasource:
     password: root
-    url: jdbc:mysql://localhost:3306/userDb
+    url: jdbc:mysql://localhost:3306/hisdb
     username: root
   driver-class-name: com.mysql.jdbc.Driver
   jpa:

@@ -18,12 +18,12 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "USER_DETAILS")
+@Table(name = "CASE_WORKER_ACCTS")
 public class UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "S.NO.")
+	@Column(name = "ACC_ID")
 	private Integer userId;
 
 	@Column(name = "FULL_NAME")
